@@ -16,3 +16,4 @@ module.exports = {
 	development: CONFIG_TEMPLATE,
 	production: CONFIG_TEMPLATE
 };
+
