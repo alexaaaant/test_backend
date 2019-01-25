@@ -5,11 +5,12 @@ let express = require('express');
 let app = express();
 
 app.get('/api/get', (request, response) => {
-	knex.raw("SELECT * FROM network;")
+	knex.raw("SELECT * from network")
 		.then((network) => {
 			response.status(200).json(network);
 		})
 		.catch((error) => {
+			console.log(error)
 			response.status(500).json({ error });
 		});
 });
