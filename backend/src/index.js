@@ -5,8 +5,7 @@ let express = require('express');
 let app = express();
 
 app.get('/api/get', (request, response) => {
-	console.log(knex('db'))
-	knex('db').select()
+	knex.raw('SELECT 1;')
 		.then((network) => {
 			response.status(200).json(network);
 		})
@@ -16,6 +15,6 @@ app.get('/api/get', (request, response) => {
 });
 
 app.listen(3001, function () {
-	console.log('Example app listening on port 3000!');
+	console.log('Example app listening on port 3001!');
 });
 
