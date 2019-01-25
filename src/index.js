@@ -1,10 +1,12 @@
-const configuration = require('./knexfile')['development'];
+// const configuration = require('./knexfile')['development'];
+import knex from './knex'
+
 let express = require('express');
-const database = require('knex')(configuration);
 let app = express();
 
 app.get('/api/get', (request, response) => {
-	database('db').select()
+	console.log(knex('db'))
+	knex('db').select()
 		.then((network) => {
 			response.status(200).json(network);
 		})

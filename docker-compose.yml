@@ -1,0 +1,10 @@
+version: "2"
+services:
+    pg:
+        image: postgres
+        environment:
+            - POSTGRES_PASSWORD=dbadmin
+            - POSTGRES_USER=dbadmin
+            - POSTGRES_DB=db
+        ports:
+            - 5433:5432
