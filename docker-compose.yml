@@ -14,5 +14,7 @@ services:
             dockerfile: Dockerfile
         ports:
             - 3001:3001
+        depends_on:
+            - pg
         links:
             - pg

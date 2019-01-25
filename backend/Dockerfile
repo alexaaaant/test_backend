@@ -5,8 +5,7 @@ WORKDIR /app/
 COPY . /app/
 
 RUN npm install
-RUN npm install sqlite3 --save
-RUN npx knex init
-RUN node_modules/.bin/knex migrate:latest
+RUN npm install -g knex
+RUN chmod +x up.sh
 
-ENTRYPOINT [ "npm", "start" ]
+CMD bash up.sh
