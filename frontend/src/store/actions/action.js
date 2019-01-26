@@ -8,11 +8,12 @@ export  const  getNodes = () => async dispatch => {
 	}
 }
 
-export const getNodeChild = (route) => async dispatch => {
+export const getNodeChild = (route, hide) => async dispatch => {
 	const res = await fetch(`http://localhost:3001/api/get/node?route=${route}`)
 	const nodeChild = await res.json()
 	if (res.ok) {
-		dispatch({type:GET_NODE_CHILD, payload:nodeChild})
+		dispatch({type:GET_NODE_CHILD, payload:{nodeChild: nodeChild, route:route}})
+		dispatch({type:CHANGE_HIDE, payload:{route:route, hide: hide}})
 	}
 }
 

@@ -1,8 +1,8 @@
-import {GET_NODES,GET_NODE_CHILD, CHANGE_HIDE} from "../../const"
+import {GET_NODES,GET_NODE_CHILD, CHANGE_HIDE, } from "../../const"
 import {wayToChildObj, setValue} from "../../functions/functions"
 
 const initialState = ({
-	nodes: []
+	nodes: [],
 })
 
 export function reduce(state = initialState, action) {
@@ -10,9 +10,9 @@ export function reduce(state = initialState, action) {
 		case GET_NODES:
 			return {...state, nodes:action.payload}
 		case GET_NODE_CHILD:
-			const steps = wayToChildObj(Object.keys(action.payload)[0])
+			const steps = wayToChildObj(action.payload.route)
 			const copyNodes = JSON.parse(JSON.stringify(state.nodes))
-			setValue(steps, action.payload, copyNodes)
+			setValue(steps, action.payload.nodeChild, copyNodes)
 			return {...state, nodes: copyNodes}
 		case CHANGE_HIDE:
 			let stepsToHide = wayToChildObj(action.payload.route, true)
@@ -23,6 +23,7 @@ export function reduce(state = initialState, action) {
 			return state
 	}
 }
+
 
 
 

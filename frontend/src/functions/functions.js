@@ -3,21 +3,30 @@ export const wayToChildObj = (way, hide) => {
 	let string = ''
 	if (way.length === 1) {
 		steps.push(way)
+		if (hide) {
+			steps.push('hide')
+		} else {
+			steps.push('child_nodes')
+		}
 	} else {
-		for (let i = 0; i < way.length - 2; i++) {
+		for (let i = 0; i < way.length; i++) {
 			if (way[i] !== '.') {
 				string = string + way[i]
 				steps.push(string)
-			} else {
+				steps.push('child_nodes')
+				}
+			 else {
 				string = string + way[i]
 			}
 		}
+		if (hide) {
+			steps.splice(-1,1)
+			steps.push('hide')
+		}
 	}
-	if (hide) {
-		steps.push('hide')
-	} else {
-		steps.push('child_nodes')
-	}
+
+
+	console.log(steps)
 	return steps
 }
 
@@ -31,6 +40,7 @@ export const setValue = (propertyPath, value, obj, hide) => {
 	} else {
 		if (hide) {
 			obj[propertyPath[0]] = !value
+
 		} else {
 			obj.loaded = true
 			obj[propertyPath[0]] = value

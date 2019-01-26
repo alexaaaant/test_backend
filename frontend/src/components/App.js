@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux"
-import {getNodes, getNodeChild, changeHide} from "../store/actions/action"
+import {changeHide, getNodeChild, getNodes} from "../store/actions/action"
 import './App.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCaretRight} from '@fortawesome/free-solid-svg-icons'
@@ -21,21 +21,27 @@ class App extends Component {
 		})
 	}
 
-	getNode = (route,node) => {
-		const {getNodeChild, changeHide} = this.props
-		!node.loaded && getNodeChild(route)
-		changeHide(route, node.hide)
+	getNode = (route, node) => {
+		const {getNodeChild} = this.props
+		!node.loaded && getNodeChild(route, node.hide)
 	}
 
-	renderNodes = (nodes, key) => {
-			return (
-				<div className='node' key={nodes[key].id}>
-								<span>
-									<FontAwesomeIcon onClick={() => this.getNode(key,nodes[key])} icon={faCaretRight}/>
-								</span>
-					<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
-				</div>
-			)
+	renderNodes = (nodes) => {
+		const {changeHide} = this.props
+		return Object.keys(nodes).map(key => {
+				if (!nodes[key].hide) {return this.renderNodes(nodes[key]['child_nodes'])}
+				return (
+					<div className='node' key={nodes[key].id}>
+						<span>
+							<FontAwesomeIcon onClick={() => {
+								!nodes[key].loaded ? this.getNode(key, nodes[key]) : changeHide(key, nodes[key].hide)
+							}} icon={faCaretRight}/>
+						</span>
+						<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
+					</div>
+				)
+			}
+		)
 	}
 
 
@@ -46,30 +52,28 @@ class App extends Component {
 			<div className="main">
 				<div className='title'>Иерархия узлов</div>
 				<div className='nodes'>
-					{Object.keys(nodes).map(key =>
-						this.renderNodes(nodes,key)
-					)}
+					{this.renderNodes(nodes)}
 				</div>
 				<div className='change'>
 					<span>+</span>
 					<span>-</span>
 				</div>
 				{/*<div className='node_info'>*/}
-					{/*{*/}
-						{/*openNode.length !== 0 &&*/}
-						{/*nodes.filter(node => node['route'] === openNode).map(node => {*/}
-							{/*return (*/}
-								{/*<React.Fragment key={node.id}>*/}
-									{/*<span>Узел</span>*/}
-									{/*<span>Имя узла: {node.name}</span>*/}
-									{/*<span>IP-адрес: {node.ip}</span>*/}
-									{/*<span>Web-port: {node.port}</span>*/}
-								{/*</React.Fragment>*/}
-							{/*)*/}
-						{/*})*/}
+				{/*{*/}
+				{/*openNode.length !== 0 &&*/}
+				{/*nodes.filter(node => node['route'] === openNode).map(node => {*/}
+				{/*return (*/}
+				{/*<React.Fragment key={node.id}>*/}
+				{/*<span>Узел</span>*/}
+				{/*<span>Имя узла: {node.name}</span>*/}
+				{/*<span>IP-адрес: {node.ip}</span>*/}
+				{/*<span>Web-port: {node.port}</span>*/}
+				{/*</React.Fragment>*/}
+				{/*)*/}
+				{/*})*/}
 
 
-					{/*}*/}
+				{/*}*/}
 				{/*</div>*/}
 			</div>
 		)
@@ -85,8 +89,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		getNodes: () => dispatch(getNodes()),
-		getNodeChild: (route) => dispatch(getNodeChild(route)),
-		changeHide: (route, hide) => dispatch(changeHide(route,hide))
+		getNodeChild: (route, hide) => dispatch(getNodeChild(route, hide)),
+		changeHide: (route, hide) => dispatch(changeHide(route, hide))
 
 	}
 }
