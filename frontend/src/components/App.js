@@ -37,9 +37,13 @@ class App extends Component {
 						</span>
 							<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
 						</div>
-						<div className='child'>
-							{!nodes[key].hide && this.renderNodes(nodes[key]['child_nodes'])}
-						</div>
+						<React.Fragment>
+							{!nodes[key].hide &&
+								<div className='child'>
+									{this.renderNodes(nodes[key]['child_nodes'])}
+								</div>
+							}
+						</React.Fragment>
 					</React.Fragment>
 				)
 			}
