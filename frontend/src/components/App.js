@@ -27,6 +27,17 @@ class App extends Component {
 		changeHide(route, node.hide)
 	}
 
+	renderNodes = (nodes, key) => {
+			return (
+				<div className='node' key={nodes[key].id}>
+								<span>
+									<FontAwesomeIcon onClick={() => this.getNode(key,nodes[key])} icon={faCaretRight}/>
+								</span>
+					<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
+				</div>
+			)
+	}
+
 
 	render() {
 		const {nodes} = this.props
@@ -35,16 +46,9 @@ class App extends Component {
 			<div className="main">
 				<div className='title'>Иерархия узлов</div>
 				<div className='nodes'>
-					{Object.keys(nodes).map(key => {
-						return (
-							<div className='node' key={nodes[key].id}>
-								<span>
-									<FontAwesomeIcon onClick={() => this.getNode(key,nodes[key])} icon={faCaretRight}/>
-								</span>
-								<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
-							</div>
-						)
-					})}
+					{Object.keys(nodes).map(key =>
+						this.renderNodes(nodes,key)
+					)}
 				</div>
 				<div className='change'>
 					<span>+</span>
