@@ -3,13 +3,26 @@ import bodyParser from 'body-parser'
 
 let express = require('express')
 let app = express()
+let cors = require('cors')
 
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/api/get', (request, response) => {
-	knex('network').select()
-		.then((network) => {
-			response.status(200).json(network)
+	knex.raw('SELECT * from network WHERE length(route) = 1')
+		.then((nodes) => {
+			let nodesObj = {}
+			nodes.rows.forEach((node) => {
+				nodesObj[node.route] = {
+					name: node.name,
+					id: node.id,
+					ip: node.ip,
+					port: node.port,
+					child_nodes: {},
+					status: 'collapsed'
+				}
+			})
+			response.status(200).json(nodesObj)
 		})
 		.catch((error) => {
 			console.log(error)
@@ -20,8 +33,19 @@ app.get('/api/get', (request, response) => {
 app.get('/api/get/node', (request, response) => {
 	let route = request.query.route
 	knex.raw(`SELECT * from network WHERE route LIKE '${route}._'`)
-		.then((network) => {
-			response.status(200).json(network.rows)
+		.then((nodes) => {
+			let nodesObj = {}
+			nodes.rows.forEach((node) => {
+				nodesObj[node.route] = {
+					name: node.name,
+					id: node.id,
+					ip: node.ip,
+					port: node.port,
+					child_nodes: {},
+					status: 'collapsed'
+				}
+			})
+			response.status(200).json(nodesObj)
 		})
 		.catch((error) => {
 			console.log(error)

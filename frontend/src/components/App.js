@@ -1,26 +1,71 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux"
-import {getNodes} from "../store/actions/action"
+import {getNodes, getNodeChild} from "../store/actions/action"
 import './App.css'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faCaretRight} from '@fortawesome/free-solid-svg-icons'
 
 class App extends Component {
+	state = {
+		openNode: ''
+	}
 
 	componentDidMount() {
 		const {getNodes} = this.props
 		getNodes()
 	}
 
+	clickNode = (route) => {
+		this.setState({
+			openNode: route
+		})
+	}
+
+	getNode = (route) => {
+		const {getNodeChild} = this.props
+		getNodeChild(route)
+	}
+
+
 	render() {
+		const {nodes} = this.props
+		const {openNode} = this.state
 		return (
 			<div className="main">
 				<div className='title'>Иерархия узлов</div>
-				<div className='nodes'/>
+				<div className='nodes'>
+					{Object.keys(nodes).map(key => {
+						return (
+							<div className='node' key={nodes[key].id}>
+								<span>
+									<FontAwesomeIcon onClick={() => this.getNode(key)} icon={faCaretRight}/>
+								</span>
+								<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
+							</div>
+						)
+					})}
+				</div>
 				<div className='change'>
 					<span>+</span>
 					<span>-</span>
 				</div>
-				<div className='node'/>
+				{/*<div className='node_info'>*/}
+					{/*{*/}
+						{/*openNode.length !== 0 &&*/}
+						{/*nodes.filter(node => node['route'] === openNode).map(node => {*/}
+							{/*return (*/}
+								{/*<React.Fragment key={node.id}>*/}
+									{/*<span>Узел</span>*/}
+									{/*<span>Имя узла: {node.name}</span>*/}
+									{/*<span>IP-адрес: {node.ip}</span>*/}
+									{/*<span>Web-port: {node.port}</span>*/}
+								{/*</React.Fragment>*/}
+							{/*)*/}
+						{/*})*/}
 
+
+					{/*}*/}
+				{/*</div>*/}
 			</div>
 		)
 	}
@@ -28,13 +73,14 @@ class App extends Component {
 
 const mapStateToProps = state => {
 	return {
-		nodes: state.reducer.nodes,
+		nodes: state.reduce.nodes,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		getNodes: (a) => dispatch(getNodes(a))
+		getNodes: () => dispatch(getNodes()),
+		getNodeChild: (route) => dispatch(getNodeChild(route))
 
 	}
 }
