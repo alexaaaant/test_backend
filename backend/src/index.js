@@ -5,7 +5,7 @@ let express = require('express');
 let app = express();
 
 app.get('/api/get', (request, response) => {
-	knex.raw("SELECT * from network")
+	knex('network').select()
 		.then((network) => {
 			response.status(200).json(network);
 		})
