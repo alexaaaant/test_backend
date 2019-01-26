@@ -3,11 +3,11 @@ import {connect} from "react-redux"
 import {changeHide, getNodeChild, getNodes} from "../store/actions/action"
 import './App.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCaretRight} from '@fortawesome/free-solid-svg-icons'
+import {faCaretRight, faCaretDown} from '@fortawesome/free-solid-svg-icons'
 
 class App extends Component {
 	state = {
-		openNode: ''
+		node: {}
 	}
 
 	componentDidMount() {
@@ -15,10 +15,8 @@ class App extends Component {
 		getNodes()
 	}
 
-	clickNode = (route) => {
-		this.setState({
-			openNode: route
-		})
+	clickNode = (node) => {
+		this.setState({node})
 	}
 
 	getNode = (route, node) => {
@@ -29,16 +27,20 @@ class App extends Component {
 	renderNodes = (nodes) => {
 		const {changeHide} = this.props
 		return Object.keys(nodes).map(key => {
-				if (!nodes[key].hide) {return this.renderNodes(nodes[key]['child_nodes'])}
 				return (
-					<div className='node' key={nodes[key].id}>
+					<React.Fragment key={nodes[key].id}>
+						<div className='node'>
 						<span>
 							<FontAwesomeIcon onClick={() => {
 								!nodes[key].loaded ? this.getNode(key, nodes[key]) : changeHide(key, nodes[key].hide)
-							}} icon={faCaretRight}/>
+							}} icon={nodes[key].hide ? faCaretRight : faCaretDown}/>
 						</span>
-						<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
-					</div>
+							<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
+						</div>
+						<div className='child'>
+							{!nodes[key].hide && this.renderNodes(nodes[key]['child_nodes'])}
+						</div>
+					</React.Fragment>
 				)
 			}
 		)
@@ -47,7 +49,7 @@ class App extends Component {
 
 	render() {
 		const {nodes} = this.props
-		const {openNode} = this.state
+		const {node} = this.state
 		return (
 			<div className="main">
 				<div className='title'>Иерархия узлов</div>
@@ -58,23 +60,16 @@ class App extends Component {
 					<span>+</span>
 					<span>-</span>
 				</div>
-				{/*<div className='node_info'>*/}
-				{/*{*/}
-				{/*openNode.length !== 0 &&*/}
-				{/*nodes.filter(node => node['route'] === openNode).map(node => {*/}
-				{/*return (*/}
-				{/*<React.Fragment key={node.id}>*/}
-				{/*<span>Узел</span>*/}
-				{/*<span>Имя узла: {node.name}</span>*/}
-				{/*<span>IP-адрес: {node.ip}</span>*/}
-				{/*<span>Web-port: {node.port}</span>*/}
-				{/*</React.Fragment>*/}
-				{/*)*/}
-				{/*})*/}
-
-
-				{/*}*/}
-				{/*</div>*/}
+				<React.Fragment>
+					{node.id !== undefined &&
+						<div className='node_info'>
+							<span>Узел</span>
+							<span>Имя узла: {node.name}</span>
+							<span>IP-адрес: {node.ip}</span>
+							<span>Web-port: {node.port}</span>
+						</div>
+					}
+				</React.Fragment>
 			</div>
 		)
 	}

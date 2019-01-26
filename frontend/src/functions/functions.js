@@ -14,19 +14,15 @@ export const wayToChildObj = (way, hide) => {
 				string = string + way[i]
 				steps.push(string)
 				steps.push('child_nodes')
-				}
-			 else {
+			} else {
 				string = string + way[i]
 			}
 		}
 		if (hide) {
-			steps.splice(-1,1)
+			steps.splice(-1, 1)
 			steps.push('hide')
 		}
 	}
-
-
-	console.log(steps)
 	return steps
 }
 

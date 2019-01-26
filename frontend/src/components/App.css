@@ -18,6 +18,10 @@
     flex-direction: column;
 }
 
+.child {
+    margin-left: 10px;
+}
+
 .node {
     display: flex;
     margin-left: 10px;
