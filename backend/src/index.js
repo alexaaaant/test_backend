@@ -19,7 +19,8 @@ app.get('/api/get', (request, response) => {
 					ip: node.ip,
 					port: node.port,
 					child_nodes: {},
-					status: 'collapsed'
+					hide: true,
+					loaded: false
 				}
 			})
 			response.status(200).json(nodesObj)
@@ -42,7 +43,8 @@ app.get('/api/get/node', (request, response) => {
 					ip: node.ip,
 					port: node.port,
 					child_nodes: {},
-					status: 'collapsed'
+					hide: true,
+					loaded: false
 				}
 			})
 			response.status(200).json(nodesObj)

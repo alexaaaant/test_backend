@@ -1,4 +1,5 @@
-import {GET_NODES,GET_NODE_CHILD} from "../../const"
+import {GET_NODES,GET_NODE_CHILD, CHANGE_HIDE} from "../../const"
+import {wayToChildObj, setValue} from "../../functions/functions"
 
 const initialState = ({
 	nodes: []
@@ -13,35 +14,16 @@ export function reduce(state = initialState, action) {
 			const copyNodes = JSON.parse(JSON.stringify(state.nodes))
 			setValue(steps, action.payload, copyNodes)
 			return {...state, nodes: copyNodes}
+		case CHANGE_HIDE:
+			let stepsToHide = wayToChildObj(action.payload.route, true)
+			const copyAllNodes = JSON.parse(JSON.stringify(state.nodes))
+			setValue(stepsToHide, action.payload.hide, copyAllNodes, true)
+			return {...state, nodes: copyAllNodes}
 		default:
 			return state
 	}
 }
 
-const wayToChildObj = (way) => {
-	let steps = []
-	let string = ''
-	for (let i = 0; i < way.length-2;i++) {
-		if(way[i] !== '.') {
-			string = string + way[i]
-			steps.push(string)
-		} else {
-			string = string + way[i]
-		}
-	}
-	steps.push('child_nodes')
-	return steps
-}
-
-const setValue = (propertyPath, value, obj) => {
-	if (propertyPath.length > 1) {
-		if (!obj.hasOwnProperty(propertyPath[0]) || typeof obj[propertyPath[0]] !== "object") obj[propertyPath[0]] = {}
-		return setValue(propertyPath.slice(1), value, obj[propertyPath[0]])
-	} else {
-		obj[propertyPath[0]] = value
-		return obj
-	}
-}
 
 
 

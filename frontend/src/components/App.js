@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux"
-import {getNodes, getNodeChild} from "../store/actions/action"
+import {getNodes, getNodeChild, changeHide} from "../store/actions/action"
 import './App.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCaretRight} from '@fortawesome/free-solid-svg-icons'
@@ -21,9 +21,10 @@ class App extends Component {
 		})
 	}
 
-	getNode = (route) => {
-		const {getNodeChild} = this.props
-		getNodeChild(route)
+	getNode = (route,node) => {
+		const {getNodeChild, changeHide} = this.props
+		!node.loaded && getNodeChild(route)
+		changeHide(route, node.hide)
 	}
 
 
@@ -38,7 +39,7 @@ class App extends Component {
 						return (
 							<div className='node' key={nodes[key].id}>
 								<span>
-									<FontAwesomeIcon onClick={() => this.getNode(key)} icon={faCaretRight}/>
+									<FontAwesomeIcon onClick={() => this.getNode(key,nodes[key])} icon={faCaretRight}/>
 								</span>
 								<span onClick={() => this.clickNode(nodes[key])}>{nodes[key].name}</span>
 							</div>
@@ -80,7 +81,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		getNodes: () => dispatch(getNodes()),
-		getNodeChild: (route) => dispatch(getNodeChild(route))
+		getNodeChild: (route) => dispatch(getNodeChild(route)),
+		changeHide: (route, hide) => dispatch(changeHide(route,hide))
 
 	}
 }
