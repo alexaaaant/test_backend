@@ -82,7 +82,8 @@ app.delete('/api/delete/node', (req, res) => {
 
 app.patch('/api/patch/node', (req, res) => {
 	let body = req.body
-	knex.raw(`UPDATE network SET (name, ip, port) = ('${body.name}','${body.ip}', ${body.port}) WHERE route = '${body.route}'`)
+	let route = req.query.route
+	knex.raw(`UPDATE network SET (name, ip, port) = ('${body.name}','${body.ip}', ${Number(body.port)}) WHERE route = '${route}'`)
 		.then((network) => {
 			res.status(200).json(network)
 		})
