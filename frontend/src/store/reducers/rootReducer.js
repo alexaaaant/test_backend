@@ -1,4 +1,4 @@
-import {GET_NODES, GET_NODE_CHILD, CHANGE_HIDE, DELETE_NODE, CHANGE_NODE} from "../../const"
+import {GET_NODES, GET_NODE_CHILD, CHANGE_HIDE, DELETE_NODE, CHANGE_NODE, ADD_NODE} from "../../const"
 import {wayToChildObj, setValue} from "../../functions/functions"
 
 const initialState = ({
@@ -29,6 +29,11 @@ export function reduce(state = initialState, action) {
 			const _copyNodes = JSON.parse(JSON.stringify(state.nodes))
 			setValue(_steps, action.payload.body, _copyNodes, false, false, true)
 			return {...state, nodes: _copyNodes}
+		case ADD_NODE:
+			const __steps = wayToChildObj(action.payload.newRoute, false, true)
+			const __copyNodes = JSON.parse(JSON.stringify(state.nodes))
+			setValue(__steps, action.payload.body, __copyNodes, false, false, true)
+			return {...state, nodes: __copyNodes}
 		default:
 			return state
 	}

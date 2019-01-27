@@ -1,16 +1,24 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux"
-import {changeHide, getNodeChild, getNodes, deleteNode, changeNode} from "../store/actions/action"
+import {changeHide, getNodeChild, getNodes, deleteNode, changeNode, addNode} from "../store/actions/action"
 import './App.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCaretRight, faCaretDown} from '@fortawesome/free-solid-svg-icons'
 
 class App extends Component {
 	state = {
-		node: {},
+		node: {
+			name: "",
+			port: "",
+			ip: "",
+			child_nodes: {},
+			hide: true,
+			loaded: true
+		},
 		copyNode: {},
 		route: '',
-		changeable: false
+		changeable: false,
+		newNode: false
 	}
 
 	componentDidMount() {
@@ -29,16 +37,18 @@ class App extends Component {
 
 	renderNodes = (nodes) => {
 		const {changeHide} = this.props
+		const {route} = this.state
 		return Object.keys(nodes).map(key => {
 				return (
-					<React.Fragment key={nodes[key].id}>
+					<React.Fragment key={key}>
 						<div className='node'>
 						<span>
 							<FontAwesomeIcon onClick={() => {
 								!nodes[key].loaded ? this.getNode(key, nodes[key]) : changeHide(key, nodes[key].hide)
 							}} icon={nodes[key].hide ? faCaretRight : faCaretDown}/>
 						</span>
-							<span onClick={() => this.clickNode(nodes[key], key)}>{nodes[key].name}</span>
+							<span onClick={() => this.clickNode(nodes[key], key)}
+								  className={route === key ? 'selected' : ''}>{nodes[key].name}</span>
 						</div>
 						<React.Fragment>
 							{!nodes[key].hide &&
@@ -72,14 +82,28 @@ class App extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault()
-		const {node, route} = this.state
-		const {changeNode} = this.props
+		const {node, route, newNode} = this.state
+		const {changeNode, addNode} = this.props
 		this.setState({
 			changeable: false
 		})
-		changeNode(node, route)
+		!newNode ? changeNode(node, route) : addNode(node, route)
 	}
 
+	addChild = () => {
+		this.setState({
+			node: {
+				name: "",
+				port: "",
+				ip: "",
+				child_nodes: {},
+				hide: true,
+				loaded: true
+			},
+			changeable: true,
+			newNode: true
+		})
+	}
 
 	render() {
 		const {nodes, deleteNode} = this.props
@@ -91,25 +115,28 @@ class App extends Component {
 					{this.renderNodes(nodes)}
 				</div>
 				<div className='change'>
-					<span>+</span>
+					<span onClick={this.addChild}>+</span>
 					<span onClick={() => {
 						route.length !== 0 && deleteNode(route)
 					}}>-</span>
 				</div>
 				<React.Fragment>
-					{node.id !== undefined &&
+					{route.length > 0 &&
 					<div className='node_info'>
 						<span>Узел</span>
 						<form onSubmit={this.handleSubmit}>
 							<label>
+								Имя узла:
 								<input type='text' value={node.name} name='name' disabled={!changeable}
 									   onChange={this.handleChange}/>
 							</label>
 							<label>
+								IP-адрес:
 								<input type='text' value={node.ip} name='ip' disabled={!changeable}
 									   onChange={this.handleChange}/>
 							</label>
 							<label>
+								Web-порт
 								<input type='text' value={node.port} name='port' disabled={!changeable}
 									   onChange={this.handleChange}/>
 							</label>
@@ -119,7 +146,10 @@ class App extends Component {
 										<input value='Принять' type='submit'/>
 										<button onClick={this.cancelChange}>Отменить</button>
 									</div> :
-									<button onClick={() => this.setState({changeable: true})}>Изменить</button>
+									<button onClick={() => this.setState({
+										changeable: true,
+										newNode: false
+									})}>Изменить</button>
 								}
 							</React.Fragment>
 						</form>
@@ -143,7 +173,8 @@ const mapDispatchToProps = dispatch => {
 		getNodeChild: (route, hide) => dispatch(getNodeChild(route, hide)),
 		changeHide: (route, hide) => dispatch(changeHide(route, hide)),
 		deleteNode: (route) => dispatch(deleteNode(route)),
-		changeNode: (body, route) => dispatch(changeNode(body, route))
+		changeNode: (body, route) => dispatch(changeNode(body, route)),
+		addNode: (body, route) => dispatch(addNode(body, route))
 
 	}
 }

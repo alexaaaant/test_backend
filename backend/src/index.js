@@ -57,11 +57,13 @@ app.get('/api/get/node', (request, response) => {
 
 app.post('/api/post/node', async (request, response) => {
 	let body = request.body
-	let count = await knex.raw(`SELECT COUNT(*) from network WHERE route LIKE '${body.route}._'`)
+	let route = request.query.route
+	let count = await knex.raw(`SELECT COUNT(*) from network WHERE route LIKE '${route}._'`)
 	let childNumber = String(Number(count.rows[0].count) + 1)
-	knex.raw(`INSERT INTO network (name, ip, port, route ) VALUES ('${body.name}','${body.ip}',${body.port},'${body.route}.${childNumber}')`)
-		.then((network) => {
-			response.status(200).json(network.rows)
+	let newRoute = route+'.'+childNumber
+	knex.raw(`INSERT INTO network (name, ip, port, route ) VALUES ('${body.name}','${body.ip}',${body.port},'${newRoute}')`)
+		.then(() => {
+			response.status(200).json(newRoute)
 		})
 		.catch((error) => {
 			console.log(error)
