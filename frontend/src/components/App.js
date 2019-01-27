@@ -42,13 +42,14 @@ class App extends Component {
                 return (
                     <React.Fragment key={key}>
                         <div className='node'>
+                            <div className="horizontal-line"/>
                             <span>
                             <FontAwesomeIcon onClick={() => {
                                 !nodes[key].loaded ? this.getNode(key, nodes[key]) : changeHide(key, nodes[key].hide)
                             }} icon={nodes[key].hide ? faCaretRight : faCaretDown}/>
                         </span>
                             <span onClick={() => this.clickNode(nodes[key], key)}
-                                  className={route === key ? 'selected' : ''}>{nodes[key].name}</span>
+                                  className={route === key ? 'selected name' : 'name'}>{nodes[key].name}</span>
                             <React.Fragment>
                                 {!nodes[key].hide &&
                                 <div className='child'>
