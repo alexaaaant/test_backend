@@ -42,21 +42,21 @@ class App extends Component {
                 return (
                     <React.Fragment key={key}>
                         <div className='node'>
-                        <span>
+                            <span>
                             <FontAwesomeIcon onClick={() => {
                                 !nodes[key].loaded ? this.getNode(key, nodes[key]) : changeHide(key, nodes[key].hide)
                             }} icon={nodes[key].hide ? faCaretRight : faCaretDown}/>
                         </span>
                             <span onClick={() => this.clickNode(nodes[key], key)}
                                   className={route === key ? 'selected' : ''}>{nodes[key].name}</span>
+                            <React.Fragment>
+                                {!nodes[key].hide &&
+                                <div className='child'>
+                                    {this.renderNodes(nodes[key]['child_nodes'])}
+                                </div>
+                                }
+                            </React.Fragment>
                         </div>
-                        <React.Fragment>
-                            {!nodes[key].hide &&
-                            <div className='child'>
-                                {this.renderNodes(nodes[key]['child_nodes'])}
-                            </div>
-                            }
-                        </React.Fragment>
                     </React.Fragment>
                 )
             }
@@ -112,7 +112,9 @@ class App extends Component {
             <div className="main">
                 <div className='title'>Иерархия узлов</div>
                 <div className='nodes'>
-                    {this.renderNodes(nodes)}
+                    <div className='nodes-container'>
+                        {this.renderNodes(nodes)}
+                    </div>
                 </div>
                 <div className='change'>
                     <span onClick={this.addChild}>+</span>
@@ -143,9 +145,10 @@ class App extends Component {
                             <React.Fragment>
                                 {changeable ?
                                     <div>
-                                        <input value='Принять' type='submit'/>
+                                        <button type='submit'>Принять</button>
                                         <button onClick={this.cancelChange}>Отменить</button>
                                     </div> :
+
                                     <button onClick={() => this.setState({
                                         changeable: true,
                                         newNode: false

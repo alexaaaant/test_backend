@@ -19,13 +19,17 @@
 }
 
 .child {
-    margin-left: 10px;
+    margin-left: 4px;
+    height: inherit;
+    position: relative;
 }
 
 .node {
-    display: flex;
-    margin-left: 10px;
-    align-items: center;
+    display: block;
+    text-align: left;
+    height: inherit;
+    list-style-type: none;
+    margin-left: 1em;
 }
 
 .nodes span {
@@ -38,7 +42,7 @@
     grid-column: 3/4;
     border: 1px solid black;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 5fr;
+    grid-template-rows: 1fr 10fr;
 }
 
 .node_info span {
@@ -47,6 +51,18 @@
 
 .node_info span:first-child {
     text-align: center;
+}
+
+.node_info form {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 10fr;
+    align-items: flex-end;
+}
+
+form button {
+    height: 23px;
+    width: 100px;
+    margin-bottom: 10px;
 }
 
 .change {
@@ -68,4 +84,9 @@
 }
 .title {
 
+}
+
+.nodes-container {
+    height: max-content;
+    position: relative;
 }

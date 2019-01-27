@@ -11,9 +11,8 @@ export const wayToChildObj = (way, hide, withoutChild) => {
 		}
 	}
 	hide && steps.splice(-1, 1) && steps.push('hide')
-	withoutChild && steps.splice(-1, 1)
-
-	return steps
+    withoutChild && steps.splice(-1, 1)
+    return steps
 }
 
 export const setValue = (propertyPath, value, obj, hide, deleted, change) => {
