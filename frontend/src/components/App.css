@@ -29,7 +29,10 @@
     text-align: left;
     height: inherit;
     list-style-type: none;
-    margin-left: 1em;
+    border-left: 2px solid #000;
+    margin-left: 3px;
+    padding-left: 10px;
+    position: relative;
 }
 
 .nodes span {
@@ -82,6 +85,7 @@ form button {
 .selected {
     background: rgba(7, 102, 245, 0.3);
 }
+
 .title {
 
 }
@@ -89,4 +93,57 @@ form button {
 .nodes-container {
     height: max-content;
     position: relative;
+    padding-left: 10px;
+}
+
+/*.horizontal-line {*/
+/*position: relative;*/
+/*left: -10px;*/
+/*top: 10px;*/
+/*width: 8px;*/
+/*border-top: 2px solid black;*/
+/*}*/
+
+/*.node:before {*/
+/*content: "";*/
+/*position: absolute;*/
+/*border-top: 1px solid black;*/
+/*border-left: 1px solid black;*/
+/*width: 35px;*/
+/*height: 100%;*/
+/*left: -35px;*/
+/*top: 10px;*/
+/*}*/
+
+/*.node:after {*/
+/*content: "";*/
+/*position: absolute;*/
+/*border-left: 1px solid black;*/
+/*height: 100%;*/
+/*left: -35px;*/
+/*top: -13px;*/
+/*z-index: -1;*/
+/*}*/
+
+/*.node:last-child {*/
+/*border-left: none;*/
+/*}*/
+.node {
+
+}
+
+.node .child {
+    margin-left: 0;
+}
+
+.node::before {
+    content: '┗';
+    color: #000;
+    position: absolute;
+    top: 0;
+    left: -9px;
+}
+
+.nodes-container > .node:last-child {
+    border-left: 2px solid transparent;
 }
