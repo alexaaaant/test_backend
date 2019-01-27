@@ -10,13 +10,9 @@ export const wayToChildObj = (way, hide, withoutChild) => {
 			string = string + way[i]
 		}
 	}
-	if (hide) {
-		steps.splice(-1, 1)
-		steps.push('hide')
-	}
-	if (withoutChild) {
-		steps.splice(-1, 1)
-	}
+	hide && steps.splice(-1, 1) && steps.push('hide')
+	withoutChild && steps.splice(-1, 1)
+
 	return steps
 }
 
