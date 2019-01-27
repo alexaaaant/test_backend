@@ -56,6 +56,7 @@
     width: 20px;
     display: flex;
     border: 1px solid;
+    cursor: pointer;
 }
 
 .change span:first-child {
