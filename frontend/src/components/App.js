@@ -118,10 +118,10 @@ class App extends Component {
                     </div>
                 </div>
                 <div className='change'>
-                    <span onClick={this.addChild}>+</span>
-                    <span onClick={() => {
+                    <button disabled={!route.length > 0} onClick={this.addChild}/>
+                    <button disabled={!route.length > 0} onClick={() => {
                         route.length !== 0 && deleteNode(route)
-                    }}>-</span>
+                    }}/>
                 </div>
                 <React.Fragment>
                     {route.length > 0 &&
@@ -146,7 +146,7 @@ class App extends Component {
                             <React.Fragment>
                                 {changeable ?
                                     <div>
-                                        <button type='submit'>Принять</button>
+                                        <button type='submit'>Применить</button>
                                         <button onClick={this.cancelChange}>Отменить</button>
                                     </div> :
 

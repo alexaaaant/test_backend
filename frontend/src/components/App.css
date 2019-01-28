@@ -2,8 +2,8 @@
     text-align: center;
     width: 80vw;
     height: 70vh;
-    border: 1px solid black;
-    border-radius: 5%;
+    border: 2px solid black;
+    border-radius: 1%;
     display: grid;
     grid-template-columns: 8fr 1fr 8fr;
     grid-template-rows: 2fr 22fr;
@@ -13,7 +13,7 @@
 
 .nodes {
     grid-row: 2/3;
-    border: 1px solid black;
+    border: 2px solid black;
     display: flex;
     flex-direction: column;
 }
@@ -54,6 +54,7 @@
 
 .node_info span:first-child {
     text-align: center;
+    align-self: center;
 }
 
 .node_info form {
@@ -68,22 +69,81 @@ form button {
     margin-bottom: 10px;
 }
 
+form button:last-child {
+    margin-left: 10px;
+}
+
+form label {
+    align-self: center;
+    display: grid;
+    grid-template-columns: 50% auto;
+}
+
+label input {
+    width: max-content;
+}
+
 .change {
     flex-direction: column;
     grid-row: 2/3;
-    height: 40px;
-    width: 20px;
+    width: 24px;
     display: flex;
-    border: 1px solid;
-    cursor: pointer;
 }
 
-.change span:first-child {
-    border-bottom: 1px solid;
+
+.change button {
+    margin-bottom: 10px;
+    cursor: pointer;
+    position: relative;
+    height: 20px;
+    width: 20px;
+}
+
+.change button:before, button:after {
+    content: "";
+    position: absolute;
+    background-color: black;
+    transition: transform 0.25s ease-out;
+}
+
+.change button:first-child:before {
+    top: 1px;
+    left: 54%;
+    width: 2px;
+    height: 81%;
+    margin-left: -2px;
+}
+
+.change button:first-child:after {
+    top: 50%;
+    left: 1px;
+    width: 87%;
+    height: 2px;
+    margin-top: -2px;
+}
+
+.change button:last-child:after {
+    top: 50%;
+    left: 1px;
+    width: 87%;
+    height: 2px;
+    margin-top: -2px;
+}
+
+.change button:disabled:before, button:disabled:after {
+    background-color: gray;
+}
+
+.change button:disabled {
+    cursor: auto;
 }
 
 .selected {
-    background: rgba(7, 102, 245, 0.3);
+    border: 1px solid rgba(7, 102, 245, 0.3);
+}
+
+.node {
+    user-select: none;
 }
 
 .nodes-container {
@@ -108,6 +168,14 @@ form button {
     border-left: 2px solid transparent;
 }
 
+.nodes-container .node {
+    padding-top: 2px;
+}
+
 .child > .node:last-child {
     border-left: 2px solid transparent;
+}
+
+.main .change {
+    justify-self: center;
 }
