@@ -106,8 +106,17 @@ class App extends Component {
         })
     }
 
+    deleteNode = () => {
+        const {deleteNode} = this.props
+        const {route} = this.state
+        route.length !== 0 && deleteNode(route)
+        this.setState({
+            route: ''
+        })
+    }
+
     render() {
-        const {nodes, deleteNode} = this.props
+        const {nodes,} = this.props
         const {node, route, changeable} = this.state
         return (
             <div className="main">
@@ -119,9 +128,7 @@ class App extends Component {
                 </div>
                 <div className='change'>
                     <button disabled={!route.length > 0} onClick={this.addChild}/>
-                    <button disabled={!route.length > 0} onClick={() => {
-                        route.length !== 0 && deleteNode(route)
-                    }}/>
+                    <button disabled={!route.length > 0} onClick={this.deleteNode}/>
                 </div>
                 <React.Fragment>
                     {route.length > 0 &&
