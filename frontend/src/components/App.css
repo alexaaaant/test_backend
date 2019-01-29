@@ -30,7 +30,7 @@
     height: inherit;
     list-style-type: none;
     border-left: 2px solid #000;
-    margin-left: 3px;
+    margin-left: 4px;
     padding-left: 10px;
     position: relative;
 }
@@ -161,7 +161,7 @@ label input {
     color: #000;
     position: absolute;
     top: 0;
-    left: -9px;
+    left: -8.7px;
 }
 
 .nodes-container > .node:last-child {
@@ -169,7 +169,6 @@ label input {
 }
 
 .nodes-container .node {
-    padding-top: 2px;
 }
 
 .child > .node:last-child {
