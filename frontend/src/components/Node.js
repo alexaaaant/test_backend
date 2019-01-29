@@ -16,11 +16,11 @@ const Node = (props) => {
         <React.Fragment key={key}>
           <div className='node'>
             <div className="horizontal-line"/>
-            <span>
+            {!(!nodes[key].hide && nodes[key].loaded && (Object.keys(nodes[key].child_nodes).length === 0)) && <span>
                 <FontAwesomeIcon onClick={() => {
                   !nodes[key].loaded ? getNode(key, nodes[key]) : changeHide(key, nodes[key].hide)
                 }} icon={nodes[key].hide ? faCaretRight : faCaretDown}/>
-              </span>
+              </span>}
             <span onClick={() => clickNode(nodes[key], key)}
                   className={route === key ? 'selected name' : 'name'}>{nodes[key].name}</span>
             <React.Fragment>
