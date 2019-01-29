@@ -8,11 +8,19 @@ services:
             - POSTGRES_DB=db
         ports:
             - 5433:5432
-    # backend:
-    #     build:
-    #         context: ./backend
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - 3001:3001
-    #     links:
-    #         - pg
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        ports:
+            - 3001:3001
+        depends_on:
+            - pg
+        links:
+            - pg
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        ports:
+            - 3000:3000
