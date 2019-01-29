@@ -1,4 +1,4 @@
-import {GET_NODES, GET_NODE_CHILD, CHANGE_HIDE, DELETE_NODE, CHANGE_NODE, ADD_NODE} from "../../const"
+import {GET_NODES, GET_NODE_CHILD, CHANGE_HIDE, DELETE_NODE, ADD_NODE} from "../../const"
 
 export const getNodes = () => async dispatch => {
 	const res = await fetch('http://localhost:3001/api/get')
@@ -37,7 +37,7 @@ export const changeNode = (body, route) => async dispatch => {
 		body: JSON.stringify(body)
 	})
 	if (res.ok) {
-		dispatch({type: CHANGE_NODE, payload: {body, route}})
+    dispatch({type: ADD_NODE, payload: {body, route}})
 	}
 }
 
@@ -48,7 +48,7 @@ export const addNode = (body, route) => async dispatch => {
 		body: JSON.stringify(body)
 	})
 	if (res.ok) {
-		let newRoute = await res.json()
-		dispatch({type: ADD_NODE, payload: {body, newRoute}})
+    let route = await res.json()
+    dispatch({type: ADD_NODE, payload: {body, route}})
 	}
 }
