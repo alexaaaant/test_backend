@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux"
-import {changeHide, getNodeChild, getNodes, deleteNode, changeNode, addNode} from "../store/actions/action"
+import {changeHide, getNodeChild, getNodes, deleteNode, addChangedNode, addNode} from "../store/actions/action"
 import './App.css'
 import NodeInfo from './NodeInfo'
 import Node from "./Node"
@@ -55,11 +55,11 @@ class App extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const {node, route, newNode} = this.state
-    const {changeNode, addNode} = this.props
+    const {addChangedNode, addNode} = this.props
     this.setState({
       changeable: false
     })
-    !newNode ? changeNode(node, route) : addNode(node, route)
+    !newNode ? addChangedNode(node, route) : addNode(node, route)
   }
 
   addChild = () => {
@@ -150,7 +150,7 @@ const mapDispatchToProps = dispatch => {
     getNodeChild: (route, hide) => dispatch(getNodeChild(route, hide)),
     changeHide: (route, hide) => dispatch(changeHide(route, hide)),
     deleteNode: (route) => dispatch(deleteNode(route)),
-    changeNode: (body, route) => dispatch(changeNode(body, route)),
+    addChangedNode: (body, route) => dispatch(addChangedNode(body, route)),
     addNode: (body, route) => dispatch(addNode(body, route))
 
   }

@@ -30,7 +30,7 @@ export const deleteNode = (route) => async dispatch => {
 	}
 }
 
-export const changeNode = (body, route) => async dispatch => {
+export const addChangedNode = (body, route) => async dispatch => {
 	const res = await fetch(`http://localhost:3001/api/patch/node?route=${route}`, {
 		method: 'PATCH',
 		headers: {'Content-Type': 'application/json'},

@@ -1,5 +1,5 @@
 import {GET_NODES, GET_NODE_CHILD, CHANGE_HIDE, DELETE_NODE, ADD_NODE} from "../../const"
-import {wayToChildObj, addNodeToObj, changeHide, deleteNode, changeNode} from "../../functions/functions"
+import {wayToChildObj, addNodeToObj, changeHide, deleteNode, addChangedNode} from "../../functions/functions"
 
 const initialState = ({
     nodes: [],
@@ -24,7 +24,7 @@ export function reduce(state = initialState, action) {
             return {...state, nodes: copyNodes}
         case ADD_NODE:
           let __steps = wayToChildObj(action.payload.route, false, true)
-            changeNode(__steps, action.payload.body, copyNodes)
+          addChangedNode(__steps, action.payload.body, copyNodes)
             return {...state, nodes: copyNodes}
         default:
             return state

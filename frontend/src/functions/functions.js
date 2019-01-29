@@ -41,10 +41,10 @@ export const deleteNode = (path, obj) => {
     }
 }
 
-export const changeNode = (path, node, obj) => {
+export const addChangedNode = (path, node, obj) => {
     if (path.length > 1) {
         if (!obj.hasOwnProperty(path[0]) || typeof obj[path[0]] !== "object") obj[path[0]] = {}
-        return changeNode(path.slice(1), node, obj[path[0]])
+      return addChangedNode(path.slice(1), node, obj[path[0]])
     } else {
         obj[path[0]] = node
         return obj
