@@ -9,7 +9,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.get('/api/get', (request, response) => {
-	knex.raw('SELECT * from network WHERE length(route) = 1')
+	knex.raw('SELECT * from network WHERE length(route) = 1 ORDER BY id')
 		.then((nodes) => {
 			let nodesObj = {}
 			nodes.rows.forEach((node) => {
@@ -33,7 +33,7 @@ app.get('/api/get', (request, response) => {
 
 app.get('/api/get/node', (request, response) => {
 	let route = request.query.route
-	knex.raw(`SELECT * from network WHERE route LIKE '${route}._'`)
+	knex.raw(`SELECT * from network WHERE route LIKE '${route}._' ORDER BY id`)
 		.then((nodes) => {
 			let nodesObj = {}
 			nodes.rows.forEach((node) => {
