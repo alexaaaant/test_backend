@@ -4,10 +4,10 @@ exports.up = function(knex, Promise) {
 		knex.schema
 			.createTable('network', function(t) {
 				t.increments('id').unsigned().primary();
-				t.string('name').unique();
+				t.string('name');
 				t.string('ip').unique();
-				t.integer('port').unique();
-				t.string('route').unique();
+				t.integer('port');
+				t.integer('parent_id');
 			})
 	]);
 
