@@ -8,71 +8,53 @@ let cors = require('cors')
 app.use(bodyParser.json())
 app.use(cors())
 
-app.get('/api/get', (request, response) => {
-	knex.raw('SELECT * from network WHERE length(route) = 1 ORDER BY id')
+app.get('/api/node', async (req, res) => {
+	knex.raw(` select *,(id in (select parent_id from network)) as hasChild from network where parent_id = ${req.query.parent_id} order by id`)
 		.then((nodes) => {
-			let nodesObj = {}
-			nodes.rows.forEach((node) => {
-				nodesObj[node.route] = {
-					name: node.name,
-					id: node.id,
-					ip: node.ip,
-					port: node.port,
-					child_nodes: {},
-					hide: true,
-					loaded: false
-				}
+			let newArray = nodes.rows.map((node) => { 
+					node.hide = true
+					node.loaded = false
+					node.hasChild = node.haschild
+					node.child_nodes = []
+					return node
 			})
-			response.status(200).json(nodesObj)
+			res.status(200).json(newArray)
 		})
 		.catch((error) => {
 			console.log(error)
-			response.status(500).json({error})
+			res.status(500).json({error})
 		})
 })
 
-app.get('/api/get/node', (request, response) => {
-	let route = request.query.route
-	knex.raw(`SELECT * from network WHERE route LIKE '${route}._' ORDER BY id`)
-		.then((nodes) => {
-			let nodesObj = {}
-			nodes.rows.forEach((node) => {
-				nodesObj[node.route] = {
-					name: node.name,
-					id: node.id,
-					ip: node.ip,
-					port: node.port,
-					child_nodes: {},
-					hide: true,
-					loaded: false
-				}
-			})
-			response.status(200).json(nodesObj)
+app.post('/api/node', async (req, res) => {
+	let body = req.body
+	await knex.raw(`INSERT INTO network (name, ip, port, parent_id) VALUES ('${body.name}','${body.ip}',${body.port}, ${req.query.parent_id})`)
+	knex.raw(`SELECT * from network WHERE ip = '${body.ip}'`)
+		.then((node) => {
+			node.rows[0].child_nodes = []
+			res.status(200).json(node.rows[0])
 		})
 		.catch((error) => {
 			console.log(error)
-			response.status(500).json({error})
+			res.status(500).json({error})
 		})
 })
 
-app.post('/api/post/node', async (request, response) => {
-	let body = request.body
-	let route = request.query.route
-	let count = await knex.raw(`SELECT COUNT(*) from network WHERE route LIKE '${route}._'`)
-	let childNumber = String(Number(count.rows[0].count) + 1)
-	let newRoute = route+'.'+childNumber
-	knex.raw(`INSERT INTO network (name, ip, port, route ) VALUES ('${body.name}','${body.ip}',${body.port},'${newRoute}')`)
-		.then(() => {
-			response.status(200).json(newRoute)
-		})
-		.catch((error) => {
-			console.log(error)
-			response.status(500).json({error})
-		})
-})
-
-app.delete('/api/delete/node', (req, res) => {
-	knex.raw(`DELETE FROM network WHERE route LIKE '${req.query.route}%'`)
+app.delete('/api/node', (req, res) => {
+	knex.raw(`WITH RECURSIVE r AS (
+		SELECT id, parent_id, name
+		FROM network
+		WHERE id = '${req.query.nodeId}'
+	 
+		UNION ALL
+	 
+		SELECT network.id, network.parent_id, network.name
+		FROM network
+		   JOIN r
+			   ON network.parent_id = r.id
+	 )
+	 
+	 DELETE FROM network WHERE id IN (SELECT id from r)`)
 		.then((network) => {
 			res.status(200).json(network)
 		})
@@ -82,10 +64,9 @@ app.delete('/api/delete/node', (req, res) => {
 		})
 })
 
-app.patch('/api/patch/node', (req, res) => {
+app.patch('/api/node', (req, res) => {
 	let body = req.body
-	let route = req.query.route
-	knex.raw(`UPDATE network SET (name, ip, port) = ('${body.name}','${body.ip}', ${Number(body.port)}) WHERE route = '${route}'`)
+	knex.raw(`UPDATE network SET (name, ip, port) = ('${body.name}','${body.ip}', ${Number(body.port)}) WHERE id = '${req.query.nodeId}'`)
 		.then((network) => {
 			res.status(200).json(network)
 		})

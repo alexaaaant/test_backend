@@ -5,28 +5,28 @@ import {faCaretDown, faCaretRight} from "@fortawesome/free-solid-svg-icons"
 const Node = (props) => {
   const {
     changeHide,
-    route,
+    nodeId,
     nodes,
     getNode,
     renderNodes,
     clickNode
   } = props
-  return Object.keys(nodes).map(key => {
+  return nodes.map(node => {
       return (
-        <React.Fragment key={key}>
+        <React.Fragment key={node.id}>
           <div className='node'>
             <div className="horizontal-line"/>
-            {!(!nodes[key].hide && nodes[key].loaded && (Object.keys(nodes[key].child_nodes).length === 0)) && <span>
+            {node.hasChild && <span>
                 <FontAwesomeIcon onClick={() => {
-                  !nodes[key].loaded ? getNode(key, nodes[key]) : changeHide(key, nodes[key].hide)
-                }} icon={nodes[key].hide ? faCaretRight : faCaretDown}/>
+                  !node.loaded ? getNode(node) : changeHide(node.id)
+                }} icon={node.hide ? faCaretRight : faCaretDown}/>
               </span>}
-            <span onClick={() => clickNode(nodes[key], key)}
-                  className={route === key ? 'selected name' : 'name'}>{nodes[key].name}</span>
+            <span onClick={() => clickNode(node.id)}
+                  className={nodeId === node.id ? 'selected name' : 'name'}>{node.name}</span>
             <React.Fragment>
-              {!nodes[key].hide &&
+              {!node.hide &&
               <div className='child'>
-                {renderNodes(nodes[key]['child_nodes'])}
+                {renderNodes(node['child_nodes'])}
               </div>
               }
             </React.Fragment>

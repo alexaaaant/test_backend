@@ -11,28 +11,31 @@ class App extends Component {
       name: "",
       port: "",
       ip: "",
-      child_nodes: {},
+      id: null,
+      parent_id: null,
       hide: true,
-      loaded: true
+      loaded: true,
     },
     copyNode: {},
-    route: '',
+    nodeId:null,
     changeable: false,
     newNode: false
   }
 
   componentDidMount() {
     const {getNodes} = this.props
-    getNodes()
+    getNodes(0)
   }
 
-  clickNode = (node, route) => {
-    this.setState({node, route, copyNode: node})
+  clickNode = (nodeId) => {
+    const {nodes} = this.props
+    let node = nodes.get(nodeId)
+    this.setState({node, copyNode: node, nodeId})
   }
 
-  getNode = (route, node) => {
+  getNode = (node) => {
     const {getNodeChild} = this.props
-    !node.loaded && getNodeChild(route, node.hide)
+    !node.loaded && getNodeChild(node)
   }
 
   handleChange = (event) => {
@@ -54,12 +57,12 @@ class App extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const {node, route, newNode} = this.state
+    const {node, nodeId, newNode} = this.state
     const {addChangedNode, addNode} = this.props
     this.setState({
       changeable: false
     })
-    !newNode ? addChangedNode(node, route) : addNode(node, route)
+    !newNode ? addChangedNode(node, nodeId) : addNode(node, nodeId)
   }
 
   addChild = () => {
@@ -68,7 +71,6 @@ class App extends Component {
         name: "",
         port: "",
         ip: "",
-        child_nodes: {},
         hide: true,
         loaded: true
       },
@@ -79,10 +81,10 @@ class App extends Component {
 
   deleteNode = () => {
     const {deleteNode} = this.props
-    const {route} = this.state
-    route.length !== 0 && deleteNode(route)
+    const {nodeId, node} = this.state
+    deleteNode(nodeId, node.parent_id)
     this.setState({
-      route: ''
+      nodeId: null
     })
   }
 
@@ -94,22 +96,22 @@ class App extends Component {
   }
 
   render() {
-    const {nodes,} = this.props
-    const {node, route, changeable} = this.state
+    const {nodes,headNodes} = this.props
+    const {node, nodeId, changeable} = this.state
     return (
       <div className="main">
         <div className='title'>Иерархия узлов</div>
         <div className='nodes'>
           <div className='nodes-container'>
-            {this.renderNodes(nodes)}
+            {nodes.size > 0 && headNodes.map(nodeId => this.renderNodes([nodes.get(nodeId)]))}
           </div>
         </div>
         <div className='change'>
-          <button disabled={!route.length > 0} onClick={this.addChild}/>
-          <button disabled={!route.length > 0} onClick={this.deleteNode}/>
+          <button disabled={!nodeId} onClick={this.addChild}/>
+          <button disabled={!nodeId} onClick={this.deleteNode}/>
         </div>
         <React.Fragment>
-          {route.length > 0 &&
+          {nodeId !==null &&
           <NodeInfo
             node={node}
             changeable={changeable}
@@ -126,11 +128,12 @@ class App extends Component {
 
   renderNodes = (nodes) => {
     const {changeHide} = this.props
-    const {route} = this.state
+    const {nodeId} = this.state
     return <Node
       changeHide={changeHide}
-      route={route}
+      nodeId={nodeId}
       nodes={nodes}
+      key={nodes[0] && nodes[0].id}
       getNode={this.getNode}
       renderNodes={this.renderNodes}
       clickNode={this.clickNode}
@@ -141,17 +144,18 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     nodes: state.reduce.nodes,
+    headNodes: state.reduce.headNodes
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getNodes: () => dispatch(getNodes()),
-    getNodeChild: (route, hide) => dispatch(getNodeChild(route, hide)),
-    changeHide: (route, hide) => dispatch(changeHide(route, hide)),
-    deleteNode: (route) => dispatch(deleteNode(route)),
-    addChangedNode: (body, route) => dispatch(addChangedNode(body, route)),
-    addNode: (body, route) => dispatch(addNode(body, route))
+    getNodes: (parent_id) => dispatch(getNodes(parent_id)),
+    getNodeChild: (node) => dispatch(getNodeChild(node)),
+    changeHide: (nodeId) => dispatch(changeHide(nodeId)),
+    deleteNode: (nodeId, parent_id) => dispatch(deleteNode(nodeId, parent_id)),
+    addChangedNode: (node, nodeId) => dispatch(addChangedNode(node, nodeId)),
+    addNode: (node, nodeId) => dispatch(addNode(node, nodeId))
 
   }
 }

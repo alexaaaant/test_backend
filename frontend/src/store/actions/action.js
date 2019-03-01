@@ -1,54 +1,54 @@
-import {GET_NODES, GET_NODE_CHILD, CHANGE_HIDE, DELETE_NODE, ADD_NODE} from "../../const"
+import {GET_NODES, GET_NODE_CHILD, CHANGE_HIDE, DELETE_NODE, ADD_NODE, CHANGE_NODE} from "../../const"
 
-export const getNodes = () => async dispatch => {
-	const res = await fetch('http://localhost:3001/api/get')
+export const getNodes = (parent_id) => async dispatch => {
+	const res = await fetch(`http://localhost:3001/api/node?parent_id=${parent_id}`)
 	const nodes = await res.json()
 	if (res.ok) {
 		dispatch({type: GET_NODES, payload: nodes})
 	}
 }
 
-export const getNodeChild = (route, hide) => async dispatch => {
-	const res = await fetch(`http://localhost:3001/api/get/node?route=${route}`)
+export const getNodeChild = (node) => async dispatch => {
+	const res = await fetch(`http://localhost:3001/api/node?parent_id=${node.id}`)
 	const nodeChild = await res.json()
 	if (res.ok) {
-		dispatch({type: GET_NODE_CHILD, payload: {nodeChild: nodeChild, route: route}})
-		dispatch({type: CHANGE_HIDE, payload: {route: route, hide: hide}})
+		dispatch({type: GET_NODE_CHILD, payload: {nodeChild: nodeChild, nodeId:node.id}})
+		dispatch({type: CHANGE_HIDE, payload: {nodeId: node.id}})
 	}
 }
 
-export const changeHide = (route, hide) => dispatch => {
-	dispatch({type: CHANGE_HIDE, payload: {route: route, hide: hide}})
+export const changeHide = (nodeId) => dispatch => {
+	dispatch({type: CHANGE_HIDE, payload: {nodeId:nodeId}})
 }
 
-export const deleteNode = (route) => async dispatch => {
-	const res = await fetch(`http://localhost:3001/api/delete/node?route=${route}`, {
+export const deleteNode = (nodeId,parent_id) => async dispatch => {
+	const res = await fetch(`http://localhost:3001/api/node?nodeId=${nodeId}`, {
 		method: 'DELETE'
 	})
 	if (res.ok) {
-		dispatch({type: DELETE_NODE, payload: route})
+		dispatch({type: DELETE_NODE, payload: {nodeId: nodeId, parent_id: parent_id}})
 	}
 }
 
-export const addChangedNode = (body, route) => async dispatch => {
-	const res = await fetch(`http://localhost:3001/api/patch/node?route=${route}`, {
+export const addChangedNode = (node, nodeId) => async dispatch => {
+	const res = await fetch(`http://localhost:3001/api/node?nodeId=${nodeId}`, {
 		method: 'PATCH',
 		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify(body)
+		body: JSON.stringify(node)
 	})
 	if (res.ok) {
-    dispatch({type: ADD_NODE, payload: {body, route}})
+    dispatch({type: CHANGE_NODE, payload: {node: node, nodeId: nodeId}})
 	}
 }
 
-export const addNode = (body, route) => async dispatch => {
-	const res = await fetch(`http://localhost:3001/api/post/node?route=${route}`, {
+export const addNode = (node, nodeId) => async dispatch=>{
+	 const res = await fetch(`http://localhost:3001/api/node?parent_id=${nodeId}`, {
 		method: 'POST',
 		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify(body)
+		body: JSON.stringify(node)
 	})
 	if (res.ok) {
-    let route = await res.json()
-    dispatch({type: ADD_NODE, payload: {body, route}})
+	let node = await res.json()
+    dispatch({type: ADD_NODE, payload: {node: node, nodeId: nodeId}})
 	}
 }
