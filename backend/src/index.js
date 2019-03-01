@@ -20,9 +20,8 @@ app.get('/api/node', async (req, res) => {
 			})
 			res.status(200).json(newArray)
 		})
-		.catch((error) => {
-			console.log(error)
-			res.status(500).json({error})
+		.catch((e) => {
+			res.status(500).json(e)
 		})
 })
 
@@ -34,9 +33,8 @@ app.post('/api/node', async (req, res) => {
 			node.rows[0].child_nodes = []
 			res.status(200).json(node.rows[0])
 		})
-		.catch((error) => {
-			console.log(error)
-			res.status(500).json({error})
+		.catch((e) => {
+			res.status(500).json(e)
 		})
 })
 
@@ -59,8 +57,7 @@ app.delete('/api/node', (req, res) => {
 			res.status(200).json(network)
 		})
 		.catch(e => {
-			console.log(e)
-			res.status(500)
+			res.status(500).json(e)
 		})
 })
 
@@ -71,8 +68,7 @@ app.patch('/api/node', (req, res) => {
 			res.status(200).json(network)
 		})
 		.catch(e => {
-			console.log(e)
-			res.status(500)
+			res.status(500).json(e)
 		})
 })
 
