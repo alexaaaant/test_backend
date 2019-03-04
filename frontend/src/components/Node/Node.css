@@ -1,0 +1,38 @@
+.node {
+    display: block;
+    text-align: left;
+    height: inherit;
+    list-style-type: none;
+    border-left: 2px solid #000;
+    margin-left: 4px;
+    padding-left: 10px;
+    position: relative;
+    user-select: none;
+}
+
+.node::before {
+    content: '┗';
+    color: #000;
+    position: absolute;
+    top: 0;
+    left: -4.7px;
+}
+
+.node .child {
+    margin-left: 0;
+}
+
+.child {
+    margin-left: 4px;
+    height: inherit;
+    position: relative;
+}
+
+.child > .node:last-child {
+    border-left: 2px solid transparent;
+}
+
+.selected {
+    border: 1px solid rgba(7, 102, 245, 0.3);
+}
+

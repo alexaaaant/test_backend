@@ -2,9 +2,8 @@
     text-align: center;
     width: 80vw;
     height: 70vh;
-    border: 2px solid black;
-    border-radius: 1%;
     display: grid;
+    background-color: #e9ecef;
     grid-template-columns: 8fr 1fr 8fr;
     grid-template-rows: 2fr 22fr;
     grid-gap: 4px;
@@ -13,66 +12,14 @@
 
 .nodes {
     grid-row: 2/3;
-    border: 2px solid black;
     display: flex;
     flex-direction: column;
-}
-
-.child {
-    margin-left: 4px;
-    height: inherit;
-    position: relative;
-}
-
-.node {
-    display: block;
-    text-align: left;
-    height: inherit;
-    list-style-type: none;
-    border-left: 2px solid #000;
-    margin-left: 4px;
-    padding-left: 10px;
-    position: relative;
 }
 
 .nodes span {
     cursor: pointer;
     margin-bottom: 5px;
 }
-
-.node_info {
-    grid-row: 2/3;
-    grid-column: 3/4;
-    display: grid;
-    grid-template-rows: 1fr 10fr;
-}
-
-.node_info span {
-    text-align: left;
-}
-
-.node_info span:first-child {
-    text-align: center;
-    align-self: center;
-}
-
-.node_info form {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr 2fr;
-    align-items: flex-end;
-}
-
-
-
-form button {
-    margin-bottom: 10px;
-}
-
-form button:last-child {
-    margin-left: 10px;
-}
-
-
 
 .change {
     flex-direction: column;
@@ -91,40 +38,16 @@ form button:last-child {
     cursor: auto;
 }
 
-.selected {
-    border: 1px solid rgba(7, 102, 245, 0.3);
-}
-
-.node {
-    user-select: none;
-}
-
 .nodes-container {
     height: max-content;
     position: relative;
     padding-left: 10px;
 }
 
-.node .child {
-    margin-left: 0;
-}
-
-.node::before {
-    content: '┗';
-    color: #000;
-    position: absolute;
-    top: 0;
-    left: -4.7px;
-}
-
 .nodes-container > .node:last-child {
     border-left: 2px solid transparent;
 }
 
-
-.child > .node:last-child {
-    border-left: 2px solid transparent;
-}
 
 .main .change {
     justify-self: center;
@@ -134,4 +57,9 @@ form button:last-child {
     position: absolute !important;
     top: 2px;
     right: 2px;
+}
+
+.nodeInfo_title {
+    grid-row: 1/2;
+    grid-column: 3/4;
 }

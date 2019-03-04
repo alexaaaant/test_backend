@@ -1,11 +1,12 @@
 import React from 'react'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faCaretDown, faCaretRight} from "@fortawesome/free-solid-svg-icons"
+import './Node.css'
 
 const Node = (props) => {
   const {
     changeHide,
-    nodeId,
+    selectedNodeId,
     nodes,
     getNode,
     renderNodes,
@@ -22,7 +23,7 @@ const Node = (props) => {
                 }} icon={node.hide ? faCaretRight : faCaretDown}/>
               </span>}
             <span onClick={() => clickNode(node.id)}
-                  className={nodeId === node.id ? 'selected name' : 'name'}>{node.name}</span>
+                  className={selectedNodeId === node.id ? 'selected name' : 'name'}>{node.name}</span>
             <React.Fragment>
               {!node.hide &&
               <div className='child'>

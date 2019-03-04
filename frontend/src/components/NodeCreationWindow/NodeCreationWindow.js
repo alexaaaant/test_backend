@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import  FormComponent  from "../Form/Form"
 
-const NewNode = (props) => {
+const NodeCreationWindow = (props) => {
   return (
       <Modal isOpen>
         <ModalHeader>
@@ -17,4 +17,4 @@ const NewNode = (props) => {
 }
 
 
-export default NewNode
+export default NodeCreationWindow

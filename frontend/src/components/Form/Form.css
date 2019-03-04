@@ -1,0 +1,28 @@
+.node_info {
+    grid-row: 2/3;
+    grid-column: 3/4;
+    display: grid;
+}
+
+.node_info span {
+    text-align: left;
+}
+
+.node_info span:first-child {
+    text-align: center;
+    align-self: center;
+}
+
+.node_info form {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 2fr;
+    align-items: flex-end;
+}
+
+form button {
+    margin-bottom: 10px;
+}
+
+form button:last-child {
+    margin-left: 10px;
+}
