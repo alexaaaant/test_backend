@@ -1,8 +1,4 @@
 .node {
-    display: block;
-    text-align: left;
-    height: inherit;
-    list-style-type: none;
     border-left: 2px solid #000;
     margin-left: 4px;
     padding-left: 10px;
@@ -20,12 +16,6 @@
 
 .node .child {
     margin-left: 0;
-}
-
-.child {
-    margin-left: 4px;
-    height: inherit;
-    position: relative;
 }
 
 .child > .node:last-child {

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap'
+import { Button, Form, FormGroup, Label, Input, FormFeedback, ButtonGroup } from 'reactstrap'
 import { onlyNumbers } from '../../helpFunctions/formValidation'
-import './Form.css'
 
 
 class FormComponent extends React.Component {
@@ -66,31 +65,36 @@ class FormComponent extends React.Component {
       validations
     } = this.state
     return (
-      <div className='node_info'>
+      <div className='mt-3 col'>
         <Form onSubmit={handleSubmit(nodeInfo)}>
-          <FormGroup>
-            <Label className='node_info__label' for='exampleName'>Имя узла:</Label>
-            <Input type='text' value={nodeInfo.name} name='name'
-              onChange={this.handleChange} />
+          <FormGroup className='row'>
+            <Label className='col' for='exampleName'>Имя узла:</Label>
+            <div className='col'>
+              <Input type='text' value={nodeInfo.name} name='name'
+                onChange={this.handleChange} />
+            </div>
           </FormGroup>
-          <FormGroup>
-            <Label for='exampleIp' className='node_info__label'>IP-адрес:</Label>
-            <Input type='text' value={nodeInfo.ip} name='ip'
-              onChange={this.handleChange} />
+          <FormGroup className='row'>
+            <Label for='exampleIp' className='col'>IP-адрес:</Label>
+            <div className='col'>
+              <Input type='text' value={nodeInfo.ip} name='ip'
+                onChange={this.handleChange} />
+            </div>
           </FormGroup>
-          <FormGroup>
-            <Label for='examplePort' className='node_info__label'>Web-порт:</Label>
-            <Input type='text' value={nodeInfo.port} name='port'
-              onChange={this.handleChange} invalid={!validations.onlyNumbers} />
+          <FormGroup className='row'>
+            <Label for='examplePort' className='col'>Web-порт:</Label>
+            <div className='col'>
+              <Input type='text' value={nodeInfo.port} name='port'
+                onChange={this.handleChange} invalid={!validations.onlyNumbers} />
+            </div>
             <FormFeedback>Можно использовать только цифры!</FormFeedback>
           </FormGroup>
-
-          <React.Fragment>
-            <div>
-              <Button className='apply-button' disabled={!validations.onlyNumbers} outline color='secondary' type='submit'>Применить</Button>
-              <Button className='cancel-button' outline color='secondary' onClick={cancelChange}>Отменить</Button>
-            </div>
-          </React.Fragment>
+          <div className='col'>
+            <ButtonGroup>
+              <Button disabled={!validations.onlyNumbers} outline color='secondary' type='submit'>Применить</Button>
+              <Button outline color='secondary' onClick={cancelChange}>Отменить</Button>
+            </ButtonGroup>
+          </div>
         </Form>
       </div>
     )

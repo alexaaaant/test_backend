@@ -49,7 +49,7 @@ class App extends Component {
     const { selectedNodeId, isNodeCreation } = this.state
     const { addChangedNode, addNode } = this.props
     !isNodeCreation ? addChangedNode(nodeInfo, selectedNodeId) : addNode(nodeInfo, selectedNodeId)
-    !isNodeCreation ? this.cancelChange() : this.cancelNewNode()
+    !isNodeCreation ? this.cancelChange() : this.closeNodeCreationWindow()
   }
 
 
@@ -71,44 +71,49 @@ class App extends Component {
     const { nodes, headNodes, error, errorInfo } = this.props
     const { selectedNodeId, isNodeCreation } = this.state
     return (
-      <div className="main border border-secondary rounded">
+      <React.Fragment>
         <Alert color="danger" className='alert' transition={{ in: false, timeout: 150 }} isOpen={error}>
           {errorInfo}
         </Alert>
-        <div className='title'>Иерархия узлов</div>
-        <div className='nodes border border-secondary rounded'>
-          <div className='nodes-container'>
-            {nodes.size > 0 && headNodes.map(selectedNodeId => this.renderNodes([nodes.get(selectedNodeId)]))}
+        <div className='container align-self-center'>
+          <div className='row justify-content-around'>
+            <div className='nodes col-lg-5 border shadow rounded card align-self-start'>
+              <div className='row card-header'>
+                <div className='col-sm text-center'>Иерархия узлов</div>
+              </div>
+              <div className='nodes-container border rounded'>
+                {nodes.size > 0 && headNodes.map(selectedNodeId => this.renderNodes([nodes.get(selectedNodeId)]))}
+              </div>
+              <ButtonGroup size='sm' className='align-self-end'>
+                <Button color='secondary' className='change__button' disabled={!selectedNodeId} onClick={this.addChild}><FontAwesomeIcon icon={faPlus} /></Button>
+                <Button color='secondary' className='change__button' disabled={!selectedNodeId} onClick={this.deleteNode}><FontAwesomeIcon icon={faMinus} /></Button>
+              </ButtonGroup>
+            </div>
+            <div className='col-lg-5 border shadow card'>
+              <div className='row card-header'>
+                <div className='col-sm align-self-start text-center '>Выбранный узел</div>
+              </div>
+              {selectedNodeId !== null &&
+                <Form
+                  node={nodes.get(selectedNodeId)}
+                  selectedNodeId={selectedNodeId}
+                  handleChange={this.handleChange}
+                  handleSubmit={this.handleSubmit}
+                  cancelChange={this.cancelChange}
+                />
+              }
+              {isNodeCreation &&
+                <NodeCreationWindow
+                  selectedNodeId={selectedNodeId}
+                  handleChange={this.handleChange}
+                  handleSubmit={this.handleSubmit}
+                  cancelChange={this.closeNodeCreationWindow}
+                />
+              }
+            </div>
           </div>
         </div>
-        <div className='change'>
-          <ButtonGroup vertical>
-            <Button outline color='secondary' className='change__button' disabled={!selectedNodeId} onClick={this.addChild}><FontAwesomeIcon icon={faPlus} /></Button>
-            <Button outline color='secondary' className='change__button' disabled={!selectedNodeId} onClick={this.deleteNode}><FontAwesomeIcon icon={faMinus} /></Button>
-          </ButtonGroup>
-        </div>
-        <div className='nodeInfo_title'>Выбранный узел</div>
-        <React.Fragment>
-          {selectedNodeId !== null &&
-            <Form
-              node={nodes.get(selectedNodeId)}
-              selectedNodeId={selectedNodeId}
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
-              cancelChange={this.cancelChange}
-            />
-          }
-          {isNodeCreation &&            
-          <NodeCreationWindow
-              selectedNodeId={selectedNodeId}
-              handleChange={this.handleChange}
-              handleSubmit={this.handleSubmit}
-              cancelChange={this.closeNodeCreationWindow}
-            />
-            }
-        </React.Fragment>
-
-      </div>
+      </React.Fragment>
     )
   }
 
