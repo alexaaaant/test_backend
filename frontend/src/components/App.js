@@ -76,7 +76,7 @@ class App extends Component {
           {errorInfo}
         </Alert>
         <div className='title'>Иерархия узлов</div>
-        <div className='nodes'>
+        <div className='nodes border border-secondary rounded'>
           <div className='nodes-container'>
             {nodes.size > 0 && headNodes.map(selectedNodeId => this.renderNodes([nodes.get(selectedNodeId)]))}
           </div>
