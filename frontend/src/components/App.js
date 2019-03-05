@@ -75,21 +75,21 @@ class App extends Component {
         <Alert color="danger" className='alert' transition={{ in: false, timeout: 150 }} isOpen={error}>
           {errorInfo}
         </Alert>
-        <div className='container align-self-center'>
+        <div className='container mt-5'>
           <div className='row justify-content-around'>
-            <div className='nodes col-lg-5 border shadow rounded card align-self-start'>
+            <div className='nodes col-lg-5 border-dark shadow rounded card align-self-start'>
               <div className='row card-header'>
                 <div className='col-sm text-center'>Иерархия узлов</div>
               </div>
               <div className='nodes-container border rounded'>
                 {nodes.size > 0 && headNodes.map(selectedNodeId => this.renderNodes([nodes.get(selectedNodeId)]))}
               </div>
-              <ButtonGroup size='sm' className='align-self-end'>
+              <ButtonGroup size='sm' className='align-self-end' vertical>
                 <Button color='secondary' className='change__button' disabled={!selectedNodeId} onClick={this.addChild}><FontAwesomeIcon icon={faPlus} /></Button>
                 <Button color='secondary' className='change__button' disabled={!selectedNodeId} onClick={this.deleteNode}><FontAwesomeIcon icon={faMinus} /></Button>
               </ButtonGroup>
             </div>
-            <div className='col-lg-5 border shadow card'>
+            <div className='col-lg-5 border-dark shadow card nodeInfo'>
               <div className='row card-header'>
                 <div className='col-sm align-self-start text-center '>Выбранный узел</div>
               </div>

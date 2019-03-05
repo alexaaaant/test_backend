@@ -18,6 +18,11 @@
     cursor: auto;
 }
 
+.nodes-container {
+    overflow: auto;
+    max-height: 400px;
+}
+
 .nodes-container > .node:last-child {
     border-left: 2px solid transparent;
 }
@@ -26,4 +31,8 @@
     position: absolute !important;
     top: 2px;
     right: 2px;
+}
+
+.nodeInfo {
+    height: 300px;
 }

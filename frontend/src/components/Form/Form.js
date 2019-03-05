@@ -89,7 +89,7 @@ class FormComponent extends React.Component {
             </div>
             <FormFeedback>Можно использовать только цифры!</FormFeedback>
           </FormGroup>
-          <div className='col'>
+          <div className='card-footer'>
             <ButtonGroup>
               <Button disabled={!validations.onlyNumbers} outline color='secondary' type='submit'>Применить</Button>
               <Button outline color='secondary' onClick={cancelChange}>Отменить</Button>
