@@ -16,6 +16,17 @@ class FormComponent extends React.Component {
         onlyNumbers: true
       }
     }
+    this.input = null;
+    this.setInputRef = e => {
+      this.input = e
+    }
+  }
+
+  focusInput = () => {
+    if(this.input && this.props.isModal) {
+      console.log(this.input.focus)
+      this.input.focus()
+    }
   }
 
   componentDidMount() {
@@ -23,6 +34,7 @@ class FormComponent extends React.Component {
     node && this.setState({
       nodeInfo: node
     })
+    setTimeout( () => this.focusInput(),100)
   }
 
   componentDidUpdate(prevProps) {
@@ -71,7 +83,7 @@ class FormComponent extends React.Component {
             <Label className='col' for='exampleName'>Имя узла:</Label>
             <div className='col'>
               <Input type='text' value={nodeInfo.name} name='name'
-                onChange={this.handleChange} />
+                onChange={this.handleChange} innerRef={this.setInputRef}/>
             </div>
           </FormGroup>
           <FormGroup className='row'>

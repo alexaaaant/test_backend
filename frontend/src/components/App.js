@@ -108,6 +108,7 @@ class App extends Component {
                   handleChange={this.handleChange}
                   handleSubmit={this.handleSubmit}
                   cancelChange={this.closeNodeCreationWindow}
+                  isModal={true}
                 />
               }
             </div>
